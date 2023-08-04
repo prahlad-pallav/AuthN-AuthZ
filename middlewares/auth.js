@@ -7,9 +7,14 @@ exports.auth = (req, res, next) => {
 
     try{
 
-        const token = req.body.token;
+        console.log("cookie", req.cookies.token);
+        console.log("body", req.body.token);
+        console.log("header", req.header("Authorization"));
 
-        if(!token){
+        const token = req.body.token || req.cookies.token || req.header("Authorization").replace("Bearer ", "");
+        
+
+        if(!token || token === undefined){
             return res.status(401).json({
                 success:false,
                 message:"Token is missing"
